@@ -22,9 +22,7 @@ This build includes two Graylog Nodes, two Elasticsearch Nodes, single MongoDB.
 
 As additional helper [cerebro](https://github.com/lmenezes/cerebro) and [nosqlclient](https://github.com/nosqlclient/nosqlclient) is available. To look at Elasticsearch and MongoDB in detail.
 
-This is not (yet?) a way to build automated setups that includes data. After the first startup you have a fresh installation.
-
-
+This is not (yet?) a way to build automated setups that includes data. After the first startup you have a fresh installation. Should you have the backup of a previous Graylog installation you might want to restore that before. Just startup the mongodb `docker-compose up mongo` and after that restore the database (example down below). Now you can start everything and you will have your configuration and settings.
 
 
 ## Customization
