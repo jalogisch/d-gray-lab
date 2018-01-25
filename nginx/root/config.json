@@ -1,0 +1,7 @@
+{
+    "title": "Graylog Docker",
+    "useSideMenu": true,
+    "lineBreaks": "gfm",
+    "additionalFooterText": "All content and images &copy; by Jan Doberstein",
+    "anchorCharacter": "#"
+}
