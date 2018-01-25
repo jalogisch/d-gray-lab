@@ -36,6 +36,8 @@ services:
     volumes:
       - ./nginx/root:/usr/share/nginx/html:ro
       - ./nginx/config/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - gl1
     networks:
       - graylog.net
   #

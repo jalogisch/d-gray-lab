@@ -33,6 +33,8 @@ The Enterprise Plugins need to be fetched manual (as long as no own graylog imag
 
 The content of `graylog/shared` is placed in `/data/shared` on both Graylog Nodes. This can be used to provide the GeoIP Database or Lookup Table sources (`.csv`) 
 
+- `http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz` 
+
 
 ```
 .
@@ -72,6 +74,6 @@ docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/b
 restore (and do not keep any data)
 
 ```
-docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/bench/d-gray-lab/backup:/backup mongo:3 bash -c 'mongorestore --drop --db graylog --host mongo:27017 /backup/graylog
+docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/bench/d-gray-lab/backup:/backup mongo:3 bash -c 'mongorestore --drop --db graylog --host mongo:27017 /backup/graylog'
 ```
 

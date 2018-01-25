@@ -1,2 +1,6 @@
 
 backup/
+
+*.sublime-workspace
+
+*.sublime-project
