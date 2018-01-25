@@ -60,3 +60,18 @@ The content of `graylog/shared` is placed in `/data/shared` on both Graylog Node
         ├── index.html
         └── index.md
 ```
+
+## Backups & Restore
+
+you need to connect a new container that runs the backup to the current used network and provide the location to create a dump of your mongodb:
+
+```
+docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/bench/d-gray-lab/backup:/backup mongo:3 bash -c 'mongodump --out /backup --host mongo:27017'
+``` 
+
+restore (and do not keep any data)
+
+```
+docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/bench/d-gray-lab/backup:/backup mongo:3 bash -c 'mongorestore --drop --db graylog --host mongo:27017 /backup/graylog
+```
+
