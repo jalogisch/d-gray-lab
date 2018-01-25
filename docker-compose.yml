@@ -156,7 +156,8 @@ services:
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   # this will be the Graylog Master
   gl1:
-    image: graylog/graylog:2.4.3-1
+    image: joschi/graylog-alpine:2.4.3-1
+    # image: graylog/graylog:2.4.3-1
     hostname: gl1 
     container_name: gl1
     mem_limit: 1500m
@@ -218,7 +219,8 @@ services:
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   # this will be the Graylog Master
   gl2:
-    image: graylog/graylog:2.4.3-1
+    image: joschi/graylog-alpine:2.4.3-1
+    #image: graylog/graylog:2.4.3-1
     hostname: gl2 
     container_name: gl2
     mem_limit: 1500m
