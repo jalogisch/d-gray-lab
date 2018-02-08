@@ -32,10 +32,12 @@ services:
     environment:
       - TZ=Europe/Berlin
     ports:
-      - 8080:80
+      - 192.168.1.50:80:80
+      - 192.168.1.50:443:443
     volumes:
       - ./nginx/root:/usr/share/nginx/html:ro
       - ./nginx/config/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/config/ssl:/etc/nginx/ssl:ro
     depends_on:
       - gl1
     networks:
@@ -53,7 +55,7 @@ services:
     ports:
       # if no need to access the mongoDB from outside
       # remove this exposed port
-      - 27017:27017
+      - 192.168.1.50:27017:27017
     volumes:
       - graylog.data.mongo:/data/db
       # set to servers data folder to be able to reuse
@@ -112,7 +114,7 @@ services:
       graylog.net:
         ipv4_address: 10.10.10.50
     ports:
-      - 9200:9200
+      - 192.168.1.50:9200:9200
 
   es2:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.6
@@ -157,7 +159,7 @@ services:
   # this will be the Graylog Master
   gl1:
     image: joschi/graylog-alpine:2.4.3-1
-    # image: graylog/graylog:2.4.3-1
+    #image: graylog/graylog:2.4.3-1
     hostname: gl1 
     container_name: gl1
     mem_limit: 1500m
@@ -173,21 +175,22 @@ services:
       # - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://10.10.10.51:9200,http://10.10.10.50:9200
+      - GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
     ports:
       # Graylog web interface and REST API
-      - 9000:9000
+      - 192.168.1.50:9000:9000
       # Syslog TCP
-      #- 514:514
+      - 192.168.1.50:514:1514
       # Syslog UDP
-      #- 514:514/udp
+      - 192.168.1.50:514:1514/udp
       # GELF TCP
-      #- 12201:12201
+      - 192.168.1.50:12201:12201
       # GELF UDP
-      #- 12201:12201/udp
+      - 192.168.1.50:12201:12201/udp
       # BEATS
-      #- 5044:5044
+      - 192.168.1.50:5044:5044
       # RAW TCP
-      #- 5555:5555
+      - 192.168.1.50:5555:5555
 
     links:
       - mongo
@@ -202,16 +205,16 @@ services:
       es2:
         condition: service_started
     volumes:
-      - ./graylog/config/node-id.gl1:/usr/share/graylog/data/config/node-id
+      - ./graylog/config/node-id.gl1:/opt/graylog/config/node-id
       - ./graylog/shared:/data/shared/
-      - graylog.data.gl1.journal:/usr/share/graylog/data/journal
+      - graylog.data.gl1.journal:/opt/graylog/data/journal
       # make archive folder for the Enterprise plugins
-      #- /srv/glesmulti/graylog/archives:/data/archives
+      - ./graylog/archives:/data/archives
       # Mount the local saved Enterprise Plugins
       # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.1.tgz
-      - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/usr/share/graylog/plugin/graylog-plugin-archive.jar
-      - ./graylog/plugins/graylog-plugin-auditlog-2.4.3jar:/usr/share/graylog/plugin/graylog-plugin-auditlog.jar
-      - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/usr/share/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
+      - ./graylog/plugins/graylog-plugin-auditlog-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
+      - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-license.jar
     networks:
       graylog.net:
         ipv4_address: 10.10.10.100
@@ -236,22 +239,23 @@ services:
       - GRAYLOG_WEB_LISTEN_URI=http://0.0.0.0:9000/graylog
       # - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:9000/graylog/api
       # - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/graylog/api
+      - GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://10.10.10.51:9200,http://10.10.10.50:9200
     ports:
       # Graylog web interface and REST API
-      #- 9000:9000
+      - 192.168.1.51:9000:9000
       # Syslog TCP
-      - 514:514
+      - 192.168.1.51:514:1514
       # Syslog UDP
-      - 514:514/udp
+      - 192.168.1.51:514:1514/udp
       # GELF TCP
-      - 12201:12201
+      - 192.168.1.51:12201:12201
       # GELF UDP
-      - 12201:12201/udp
+      - 192.168.1.51:12201:12201/udp
       # BEATS
-      - 5044:5044
+      - 192.168.1.51:5044:5044
       # RAW TCP
-      - 5555:5555
+      - 192.168.1.51:5555:5555
 
     links:
       - mongo
@@ -266,16 +270,16 @@ services:
       es2:
         condition: service_started
     volumes:
-      - ./graylog/config/node-id.gl2:/usr/share/graylog/data/config/node-id
+      - ./graylog/config/node-id.gl2:/opt/graylog/config/node-id
       - ./graylog/shared:/data/shared/
-      - graylog.data.gl2.journal:/usr/share/graylog/data/journal
+      - graylog.data.gl2.journal:/opt/graylog/data/journal
       # make archive folder for the Enterprise plugins
-      #- /srv/glesmulti/graylog/archives:/data/archives
+      - ./graylog/archives:/data/archives
       # Mount the local saved Enterprise Plugins
-      # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.3.tgz
-      - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/usr/share/graylog/plugin/graylog-plugin-archive.jar
-      - ./graylog/plugins/graylog-plugin-auditlog-2.4.3jar:/usr/share/graylog/plugin/graylog-plugin-auditlog.jar
-      - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/usr/share/graylog/plugin/graylog-plugin-license.jar
+      # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.1.tgz
+      - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
+      - ./graylog/plugins/graylog-plugin-auditlog-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
+      - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-license.jar
     networks:
       graylog.net:
         ipv4_address: 10.10.10.101

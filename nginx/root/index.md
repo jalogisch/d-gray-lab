@@ -9,10 +9,21 @@
 
 ### exposed ports
 
-- **8080** NGINX 
-- **9000** Graylog (available at `/graylog/` to _gl1_ server)
-- **27017** MongoDB (without authentification!)
-- **9200** Elasticsearch (without Authentication to _es1_ server )
+- 192.168.1.50 **80** NGINX 
+- 192.168.1.50 **9000** Graylog (available at `/graylog/` to _gl1_ server)
+- 192.168.1.51 **9000** Graylog (available at `/graylog/` to _gl2_ server)
+- 192.168.1.50 **27017** MongoDB (without authentification!)
+- 192.168.1.50 **9200** Elasticsearch (without Authentication to _es1_ server )
+
+### Graylog Inputs
+
+- 192.168.1.50/51 514 UDP/TCP Syslog
+- 192.168.1.50/51 12201 UDP/TCP GELF
+- 192.168.1.50/51 5044 TCP  BEATS
+- 192.168.1.50/51 5555 TCP  RAW
+
+
+
 
 ## Description
 
@@ -66,12 +77,12 @@ The content of `graylog/shared` is placed in `/data/shared` on both Graylog Node
 you need to connect a new container that runs the backup to the current used network and provide the location to create a dump of your mongodb:
 
 ```
-docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/bench/d-gray-lab/backup:/backup mongo:3 bash -c 'mongodump --out /backup --host mongo:27017'
+docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v ${PWD}/backup/mongo/:/backup mongo:3 bash -c 'mongodump --out /backup --host mongo:27017'
 ``` 
 
 restore (and do not keep any data)
 
 ```
-docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v /Users/jd/bench/d-gray-lab/backup:/backup mongo:3 bash -c 'mongorestore --drop --db graylog --host mongo:27017 /backup/graylog'
+docker run --rm --link mongo:mongo --network=dgraylab_graylog.net -v ${PWD}/d-gray-lab/backup:/backup mongo:3 bash -c 'mongorestore --drop --db graylog --host mongo:27017 /backup/graylog'
 ```
 
