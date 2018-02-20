@@ -107,6 +107,11 @@ services:
       - network.host=0.0.0.0
       - bootstrap.memory_lock=true
       - xpack.security.enabled=false
+      - xpack.watcher.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.security.audit.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
       - discovery.zen.ping.unicast.hosts=10.10.10.51
     volumes:
       - graylog.data.es1:/usr/share/elasticsearch/data
@@ -134,6 +139,11 @@ services:
       - network.host=0.0.0.0
       - bootstrap.memory_lock=true
       - xpack.security.enabled=false
+      - xpack.watcher.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.security.audit.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
       - discovery.zen.ping.unicast.hosts=10.10.10.50
     volumes:
       - graylog.data.es2:/usr/share/elasticsearch/data
