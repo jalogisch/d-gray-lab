@@ -177,9 +177,8 @@ services:
     environment:
       - TZ=Europe/Berlin
       - "GRAYLOG_SERVER_JAVA_OPTS=-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
-      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
-      # Password: admin
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_PASSWORD_SECRET=18e6a58d7c9efe94b04600bb716955f306467c25b552883cb9695d6a38128d49
+      - GRAYLOG_ROOT_PASSWORD_SHA2=18e6a58d7c9efe94b04600bb716955f306467c25b552883cb9695d6a38128d49
       - GRAYLOG_REST_LISTEN_URI=http://0.0.0.0:9000/graylog/api
       - GRAYLOG_WEB_LISTEN_URI=http://0.0.0.0:9000/graylog
       # - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:9000/graylog/api
@@ -225,6 +224,7 @@ services:
       - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
       - ./graylog/plugins/graylog-plugin-auditlog-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
       - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-auth-sso-2.4.2.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
     networks:
       graylog.net:
         ipv4_address: 10.10.10.100
@@ -242,9 +242,8 @@ services:
       - GRAYLOG_IS_MASTER=false
       - TZ=Europe/Berlin
       - "GRAYLOG_SERVER_JAVA_OPTS=-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
-      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
-      # Password: admin
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_PASSWORD_SECRET=18e6a58d7c9efe94b04600bb716955f306467c25b552883cb9695d6a38128d49
+      - GRAYLOG_ROOT_PASSWORD_SHA2=18e6a58d7c9efe94b04600bb716955f306467c25b552883cb9695d6a38128d49
       - GRAYLOG_REST_LISTEN_URI=http://0.0.0.0:9000/graylog/api
       - GRAYLOG_WEB_LISTEN_URI=http://0.0.0.0:9000/graylog
       # - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:9000/graylog/api
@@ -290,6 +289,7 @@ services:
       - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
       - ./graylog/plugins/graylog-plugin-auditlog-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
       - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-auth-sso-2.4.2.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
     networks:
       graylog.net:
         ipv4_address: 10.10.10.101
