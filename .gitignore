@@ -1,7 +1,6 @@
 
 backup/
 graylog/archives/
-graylog/shared/
 
 *.sublime-workspace
 *.sublime-project
