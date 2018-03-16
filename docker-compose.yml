@@ -90,7 +90,7 @@ services:
   # but also connected to the GL 
   #
   es1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.6
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.8
     container_name: es1
     hostname: es1
     ulimits:
@@ -122,7 +122,7 @@ services:
       - 192.168.1.50:9200:9200
 
   es2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.6
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.8
     container_name: es2
     hostname: es2
     ulimits:
@@ -184,6 +184,7 @@ services:
       # - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://10.10.10.51:9200,http://10.10.10.50:9200
+      - GRAYLOG_TRUSTED_PROXIES=10.10.10.0/24
       - GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
     ports:
       # Graylog web interface and REST API
@@ -250,6 +251,7 @@ services:
       # - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://10.10.10.51:9200,http://10.10.10.50:9200
+      - GRAYLOG_TRUSTED_PROXIES=10.10.10.0/24
     ports:
       # Graylog web interface and REST API
       - 192.168.1.51:9000:9000
