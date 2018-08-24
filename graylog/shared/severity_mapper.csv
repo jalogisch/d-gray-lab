@@ -1,0 +1,8 @@
+"Nr","HumanRead"
+"0","0 - Emergency",
+"1","1 - Alert",
+"2","2 - Critical",
+"3","3 - Error",
+"4","4 - Warning",
+"5","5 - Notification",
+"6","6 - Informational"

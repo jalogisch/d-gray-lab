@@ -29,6 +29,7 @@ services:
     container_name: nginx
     hostname: nginx
     mem_limit: 128m
+    restart: always
     environment:
       - TZ=Europe/Berlin
     ports:
@@ -49,6 +50,7 @@ services:
     image: mongo:3
     container_name: mongo
     hostname: mongo
+    restart: always
     mem_limit: 256m
     environment:
       - TZ=Europe/Berlin
@@ -70,6 +72,7 @@ services:
     image: mongoclient/mongoclient
     container_name: mongoclient
     hostname: mongoclient
+    restart: always
     mem_limit: 128m
     environment:
       - TZ=Europe/Berlin
@@ -90,14 +93,15 @@ services:
   # but also connected to the GL 
   #
   es1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.8
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
     container_name: es1
     hostname: es1
+    restart: always
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 2g
+    mem_limit: 3g
     environment:
       - node.name=es1
       - TZ=Europe/Berlin
@@ -122,14 +126,15 @@ services:
       - 192.168.1.50:9200:9200
 
   es2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.8
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
     container_name: es2
     hostname: es2
+    restart: always
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 2g
+    mem_limit: 3g
     environment:
       - node.name=es2
       - TZ=Europe/Berlin
@@ -155,6 +160,7 @@ services:
   cerebro:
     image: yannart/cerebro:latest
     container_name: cerebro
+    restart: always
     hostname: cerebro
     volumes:
       # the given configuration will provide cerebro 
@@ -168,10 +174,11 @@ services:
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   # this will be the Graylog Master
   gl1:
-    image: joschi/graylog-alpine:2.4.3-1
+    image: joschi/graylog-alpine:2.4.6-1
     #image: graylog/graylog:2.4.3-1
     hostname: gl1 
     container_name: gl1
+    restart: always
     mem_limit: 1500m
 
     environment:
@@ -184,8 +191,9 @@ services:
       # - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://10.10.10.51:9200,http://10.10.10.50:9200
-      - GRAYLOG_TRUSTED_PROXIES=10.10.10.0/24
+      - GRAYLOG_TRUSTED_PROXIES=10.10.10.0/24,192.168.1.10/32
       - GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
+      - GRAYLOG_ALLOW_LEADING_WILDCARD_SEARCHES=true
     ports:
       # Graylog web interface and REST API
       - 192.168.1.50:9000:9000
@@ -222,9 +230,9 @@ services:
       - ./graylog/archives:/data/archives
       # Mount the local saved Enterprise Plugins
       # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.1.tgz
-      - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
-      - ./graylog/plugins/graylog-plugin-auditlog-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
-      - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-archive-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
+      - ./graylog/plugins/graylog-plugin-auditlog-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
+      - ./graylog/plugins/graylog-plugin-license-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-license.jar
       - ./graylog/plugins/graylog-plugin-auth-sso-2.4.2.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
     networks:
       graylog.net:
@@ -233,7 +241,7 @@ services:
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   # this will be the Graylog Master
   gl2:
-    image: joschi/graylog-alpine:2.4.3-1
+    image: joschi/graylog-alpine:2.4.6-1
     #image: graylog/graylog:2.4.3-1
     hostname: gl2 
     container_name: gl2
@@ -251,7 +259,8 @@ services:
       # - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/graylog/api
       - GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://10.10.10.51:9200,http://10.10.10.50:9200
-      - GRAYLOG_TRUSTED_PROXIES=10.10.10.0/24
+      - GRAYLOG_ALLOW_LEADING_WILDCARD_SEARCHES=true
+      - GRAYLOG_TRUSTED_PROXIES=10.10.10.0/24,192.168.1.10/32
     ports:
       # Graylog web interface and REST API
       - 192.168.1.51:9000:9000
@@ -288,9 +297,9 @@ services:
       - ./graylog/archives:/data/archives
       # Mount the local saved Enterprise Plugins
       # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.1.tgz
-      - ./graylog/plugins/graylog-plugin-archive-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
-      - ./graylog/plugins/graylog-plugin-auditlog-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
-      - ./graylog/plugins/graylog-plugin-license-2.4.3.jar:/opt/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-archive-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
+      - ./graylog/plugins/graylog-plugin-auditlog-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
+      - ./graylog/plugins/graylog-plugin-license-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-license.jar
       - ./graylog/plugins/graylog-plugin-auth-sso-2.4.2.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
     networks:
       graylog.net:
