@@ -93,7 +93,7 @@ services:
   # but also connected to the GL 
   #
   es1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
     container_name: es1
     hostname: es1
     restart: always
@@ -126,7 +126,7 @@ services:
       - 192.168.1.50:9200:9200
 
   es2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.10
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
     container_name: es2
     hostname: es2
     restart: always
@@ -174,8 +174,7 @@ services:
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   # this will be the Graylog Master
   gl1:
-    image: joschi/graylog-alpine:2.4.6-1
-    #image: graylog/graylog:2.4.3-1
+    image: jalogisch/docker-graylog-alpine:2.5.0
     hostname: gl1 
     container_name: gl1
     restart: always
@@ -224,16 +223,25 @@ services:
         condition: service_started
     volumes:
       - ./graylog/config/node-id.gl1:/opt/graylog/config/node-id
+      # Shared folder to hold Lookup tables and similar
       - ./graylog/shared:/data/shared/
       - graylog.data.gl1.journal:/opt/graylog/data/journal
       # make archive folder for the Enterprise plugins
       - ./graylog/archives:/data/archives
-      # Mount the local saved Enterprise Plugins
-      # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.1.tgz
-      - ./graylog/plugins/graylog-plugin-archive-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
-      - ./graylog/plugins/graylog-plugin-auditlog-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
-      - ./graylog/plugins/graylog-plugin-license-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-license.jar
-      - ./graylog/plugins/graylog-plugin-auth-sso-2.4.2.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
+      # http://docs.graylog.org/en/2.5/pages/enterprise/setup.html#tarball
+      - ./graylog/plugins/graylog-plugin-archive-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
+      - ./graylog/plugins/graylog-plugin-auditlog-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
+      - ./graylog/plugins/graylog-plugin-license-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-enterprise-integrations-2.5.0+0.jar:/opt/graylog/plugin/graylog-plugin-enterprise-integrations-2.5.0+0.jar
+      # https://github.com/Graylog2/graylog-plugin-auth-sso
+      - ./graylog/plugins/graylog-plugin-auth-sso-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
+      # https://github.com/nexylan/graylog-rabbitmq
+      - ./graylog/plugins/graylog-rabbitmq-1.3.0.jar:/opt/graylog/plugin/graylog-plugin-rabbitmq.jar
+      # https://github.com/cvtienhoven/graylog-plugin-aggregates
+      - ./graylog/plugins/graylog-plugin-aggregates-2.3.0.jar:/opt/graylog/plugin/graylog-plugin-aggretates.jar
+      # https://github.com/airbus-cyber
+      - ./graylog/plugins/graylog-plugin-aggregation-count-1.0.0.jar:/opt/graylog/plugin/graylog-plugin-aggregation-count-1.0.0.jar
+      - ./graylog/plugins/graylog-plugin-correlation-count-1.0.0.jar:/opt/graylog/plugin/graylog-plugin-correlation-count-1.0.0.jar    
     networks:
       graylog.net:
         ipv4_address: 10.10.10.100
@@ -241,8 +249,7 @@ services:
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   # this will be the Graylog Master
   gl2:
-    image: joschi/graylog-alpine:2.4.6-1
-    #image: graylog/graylog:2.4.3-1
+    image: jalogisch/docker-graylog-alpine:2.5.0
     hostname: gl2 
     container_name: gl2
     mem_limit: 1500m
@@ -291,16 +298,25 @@ services:
         condition: service_started
     volumes:
       - ./graylog/config/node-id.gl2:/opt/graylog/config/node-id
+      # Shared folder to hold Lookup tables and simila
       - ./graylog/shared:/data/shared/
       - graylog.data.gl2.journal:/opt/graylog/data/journal
       # make archive folder for the Enterprise plugins
       - ./graylog/archives:/data/archives
-      # Mount the local saved Enterprise Plugins
-      # wget https://downloads.graylog.org/releases/graylog-enterprise/plugin-bundle/tgz/graylog-enterprise-plugins-2.4.1.tgz
-      - ./graylog/plugins/graylog-plugin-archive-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
-      - ./graylog/plugins/graylog-plugin-auditlog-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
-      - ./graylog/plugins/graylog-plugin-license-2.4.6.jar:/opt/graylog/plugin/graylog-plugin-license.jar
-      - ./graylog/plugins/graylog-plugin-auth-sso-2.4.2.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
+      # http://docs.graylog.org/en/2.5/pages/enterprise/setup.html#tarball
+      - ./graylog/plugins/graylog-plugin-archive-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-archive.jar
+      - ./graylog/plugins/graylog-plugin-auditlog-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-auditlog.jar
+      - ./graylog/plugins/graylog-plugin-license-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-license.jar
+      - ./graylog/plugins/graylog-plugin-enterprise-integrations-2.5.0+0.jar:/opt/graylog/plugin/graylog-plugin-enterprise-integrations-2.5.0+0.jar
+      # https://github.com/Graylog2/graylog-plugin-auth-sso
+      - ./graylog/plugins/graylog-plugin-auth-sso-2.5.0.jar:/opt/graylog/plugin/graylog-plugin-sso.jar
+      # https://github.com/nexylan/graylog-rabbitmq
+      - ./graylog/plugins/graylog-rabbitmq-1.3.0.jar:/opt/graylog/plugin/graylog-plugin-rabbitmq.jar
+      # https://github.com/cvtienhoven/graylog-plugin-aggregates
+      - ./graylog/plugins/graylog-plugin-aggregates-2.3.0.jar:/opt/graylog/plugin/graylog-plugin-aggretates.jar
+      # https://github.com/airbus-cyber
+      - ./graylog/plugins/graylog-plugin-aggregation-count-1.0.0.jar:/opt/graylog/plugin/graylog-plugin-aggregation-count-1.0.0.jar
+      - ./graylog/plugins/graylog-plugin-correlation-count-1.0.0.jar:/opt/graylog/plugin/graylog-plugin-correlation-count-1.0.0.jar
     networks:
       graylog.net:
         ipv4_address: 10.10.10.101
