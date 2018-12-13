@@ -93,7 +93,8 @@ services:
   # but also connected to the GL 
   #
   es1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    #image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.3
     container_name: es1
     hostname: es1
     restart: always
@@ -110,12 +111,12 @@ services:
       - transport.host=es1
       - network.host=0.0.0.0
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - xpack.watcher.enabled=false
-      - xpack.monitoring.enabled=false
-      - xpack.security.audit.enabled=false
-      - xpack.ml.enabled=false
-      - xpack.graph.enabled=false
+      #- xpack.security.enabled=false
+      #- xpack.watcher.enabled=false
+      #- xpack.monitoring.enabled=false
+      #- xpack.security.audit.enabled=false
+      #- xpack.ml.enabled=false
+      #- xpack.graph.enabled=false
       - discovery.zen.ping.unicast.hosts=10.10.10.51
     volumes:
       - graylog.data.es1:/usr/share/elasticsearch/data
@@ -126,7 +127,8 @@ services:
       - 192.168.1.50:9200:9200
 
   es2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    #image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.3
     container_name: es2
     hostname: es2
     restart: always
@@ -143,12 +145,12 @@ services:
       - transport.host=es2
       - network.host=0.0.0.0
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - xpack.watcher.enabled=false
-      - xpack.monitoring.enabled=false
-      - xpack.security.audit.enabled=false
-      - xpack.ml.enabled=false
-      - xpack.graph.enabled=false
+      #- xpack.security.enabled=false
+      #- xpack.watcher.enabled=false
+      #- xpack.monitoring.enabled=false
+      #- xpack.security.audit.enabled=false
+      #- xpack.ml.enabled=false
+      #- xpack.graph.enabled=false
       - discovery.zen.ping.unicast.hosts=10.10.10.50
     volumes:
       - graylog.data.es2:/usr/share/elasticsearch/data
